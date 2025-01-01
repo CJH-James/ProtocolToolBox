@@ -1,0 +1,41 @@
+# Start with the GCC base image
+FROM gcc:14.2.0
+
+# Add metadata about the image
+LABEL maintainer="CJH-James <qaz75203code@gmail.com>"
+LABEL version="1.0"
+LABEL description="Minimal Docker image for C development with GCC-14.2.0 and CMake-3.31.3."
+
+# ARG to specify platform during build
+ARG TARGETPLATFORM
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required tools and dependencies
+# wget & ca-certificates --> for install cmake from web source
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        wget \  
+        ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install CMake using precompiled binaries
+RUN case "$TARGETPLATFORM" in \
+    "linux/amd64") \
+        wget https://github.com/Kitware/CMake/releases/download/v3.31.3/cmake-3.31.3-linux-x86_64.sh -O /tmp/cmake.sh; \
+        ;; \
+    "linux/arm64") \
+        wget https://github.com/Kitware/CMake/releases/download/v3.31.3/cmake-3.31.3-linux-aarch64.sh -O /tmp/cmake.sh; \
+        ;; \
+    *) \
+        echo "Unsupported platform: $TARGETPLATFORM"; \
+        apt install cmake -y \
+        exit 1 ;; \
+    esac && \
+    chmod +x /tmp/cmake.sh && \
+    /tmp/cmake.sh --skip-license --prefix=/usr/local && \
+    rm /tmp/cmake.sh
+
+# Default command
+CMD ["bash"]

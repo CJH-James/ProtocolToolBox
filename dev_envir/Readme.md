@@ -3,9 +3,8 @@
 ### version info
 
 ```bash
-    gcc:14.2.0
     docker:27.4.1, build b9d17ea
-
+       (must have `docker buildx`)
 ```
 
 
@@ -13,22 +12,66 @@
 
 - Build Docker 
 ```bash
-    docker build -t gcc_dev:0.1.0 ./dev_envir/
-
-    docker run -v /YOUR_PATH_TO_REPO/ProtocolToolBox:/ProtocolToolBox --name ProtocolToolBox-dev -it gcc_dev:0.1.0
+    docker build -t gcc_dev:1.1.0 -f ./dev_envir/Dockerfile .
 
 ```
 
-- Get into the Docker Container again
+- Build Dockerfile_multiplatform 
 ```bash
+    docker buildx create --use --name NAME_YOUR_DOCKER_BUILDER
+    docker buildx inspect --bootstrap
+    # list your buildx
+    docker buildx ls
+
+    ### for arm64
+    docker buildx build --platform linux/arm64 \
+                        -f ./dev_envir/Dockerfile_multiplatform \
+                        -t arm64-gcc_dev:1.0.0 . \
+                        --load
+
+    #  --platform PLATFORM        PLATFORM options {linux/arm64, linux/amd64}
+    #             
+    #  -t IMAGE_NAME:VERION .     The image name and version (P.S. The dot in the end is necessary)
+    #
+    #  -f DOCKERFILE              Build with specific dockerfile 
+    #
+    #  --push --> push to remote(docker hub)
+    #  --load --> load to local
+```
+- Remove build cache
+``` bash
+
+docker builder prune
+
+```
+
+### Docker run
+
+- Run the Docker Container
+```bash
+
+    docker run -v /YOUR_PATH_TO_REPO/ProtocolToolBox:/ProtocolToolBox \
+                  --name NAME_YOUR_CONTAINER -it THE_IMAGES_NAME_AND_VERSION
+#---Example---#
+    docker run -v /YOUR_PATH_TO_REPO/ProtocolToolBox:/ProtocolToolBox \
+               --name ProtocolToolBox-dev -it gcc_dev:1.1.0
+```
+
+- Get into the Docker Container again
+  - 1. Start the container (if it stop)
+  - 2. Get into the container
+```bash
+    docker start YOUR_CONTAINER_NAME
+    docker attach YOUR_CONTAINER_NAME
+
+#---Example---#
     docker start ProtocolToolBox-dev
     docker attach ProtocolToolBox-dev
 
 ```
 
 
-
-Fail list:
+### Quick note for failure:
 1. Docker Permission denied
 
 ```bash
