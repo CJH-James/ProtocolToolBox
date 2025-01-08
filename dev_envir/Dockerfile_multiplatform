@@ -3,11 +3,14 @@ FROM gcc:14.2.0
 
 # Add metadata about the image
 LABEL maintainer="CJH-James <qaz75203code@gmail.com>"
-LABEL version="1.0"
 LABEL description="Minimal Docker image for C development with GCC-14.2.0 and CMake-3.31.3."
 
 # ARG to specify platform during build
 ARG TARGETPLATFORM
+
+# ARG for the user permission
+ARG USER_ID
+ARG GROUP_ID
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
@@ -17,7 +20,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         wget \  
-        ca-certificates && \
+        ca-certificates \
+        sudo && \
     rm -rf /var/lib/apt/lists/*
 
 # Install CMake using precompiled binaries
@@ -36,6 +40,17 @@ RUN case "$TARGETPLATFORM" in \
     chmod +x /tmp/cmake.sh && \
     /tmp/cmake.sh --skip-license --prefix=/usr/local && \
     rm /tmp/cmake.sh
+
+
+# Set the user permission
+RUN addgroup --gid $GROUP_ID docker
+RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID docker
+# Give the docker user sudo privileges
+RUN echo "docker ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# switch to the user "docker"
+USER docker
+
+WORKDIR /home/docker
 
 # Default command
 CMD ["bash"]
