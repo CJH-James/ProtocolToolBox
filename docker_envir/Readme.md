@@ -13,7 +13,7 @@
 - Build Docker 
 ```bash
     docker build -t gcc_dev:1.3.0 \
-                 -f ./dev_envir/Dockerfile . \
+                 -f ./docker_envir/Dockerfile . \
                  --build-arg USER_NAME=$(whoami) \
                  --build-arg USER_ID=$(id -u) \
                  --build-arg GROUP_ID=$(id -g) \
@@ -30,7 +30,7 @@
 
     ### for arm64
     docker buildx build -t arm64-gcc:1.2.0 . \
-                        -f ./dev_envir/Dockerfile_multiplatform \
+                        -f ./docker_envir/Dockerfile_multiplatform \
                         --platform linux/arm64 \
                         --build-arg USER_NAME=$(whoami) \
                         --build-arg USER_ID=$(id -u) \
