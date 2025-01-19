@@ -12,10 +12,12 @@
 
 - Build Docker 
 ```bash
-    docker build -t gcc_dev:1.2.0 \
+    docker build -t gcc_dev:1.3.0 \
+                 -f ./dev_envir/Dockerfile . \
+                 --build-arg USER_NAME=$(whoami) \
                  --build-arg USER_ID=$(id -u) \
                  --build-arg GROUP_ID=$(id -g) \
-                 -f ./dev_envir/Dockerfile .
+                 --build-arg WORKDIR=$(pwd)
 
 ```
 
@@ -27,11 +29,13 @@
     docker buildx ls
 
     ### for arm64
-    docker buildx build --platform linux/arm64 \
+    docker buildx build -t arm64-gcc:1.2.0 . \
                         -f ./dev_envir/Dockerfile_multiplatform \
-                        -t arm64-gcc:1.1.0 . \
+                        --platform linux/arm64 \
+                        --build-arg USER_NAME=$(whoami) \
                         --build-arg USER_ID=$(id -u) \
                         --build-arg GROUP_ID=$(id -g) \
+                        --build-arg WORKDIR=$(pwd) \
                         --load
 
     #  --platform PLATFORM        PLATFORM options {linux/arm64, linux/amd64}
@@ -58,8 +62,8 @@ docker builder prune
     docker run -v /YOUR_PATH_TO_REPO/ProtocolToolBox:/ProtocolToolBox \
                   --name NAME_YOUR_CONTAINER -it THE_IMAGES_NAME_AND_VERSION
 #---Example---#
-    docker run -v /home/jameshuang/workspace/ProtocolToolBox:/home/docker/ProtocolToolBox \
-               --name ProtocolToolBox-dev -it gcc_dev:1.1.0
+    docker run -v /home/jameshuang/workspace/ProtocolToolBox:/home/jameshuang/workspace/ProtocolToolBox \
+               --name ProtocolToolBox-dev -it gcc_dev:1.3.0
 ```
 
 - Get into the Docker Container again
