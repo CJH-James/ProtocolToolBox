@@ -1,0 +1,8 @@
+#cmake build 
+build/*
+lib/*
+output/*
+
+
+# vscode
+.vscode/*
