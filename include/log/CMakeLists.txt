@@ -12,7 +12,7 @@ add_library(static_log STATIC ${LOG})
 
 target_include_directories(static_log 
     PUBLIC 
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/header
 )
 
 set_target_properties(static_log PROPERTIES PREFIX "lib")
@@ -24,7 +24,7 @@ add_library(dynamic_log SHARED ${LOG})
 
 target_include_directories(dynamic_log 
     PUBLIC 
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/header
 )
 
 set_target_properties(dynamic_log PROPERTIES PREFIX "lib")

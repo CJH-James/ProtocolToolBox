@@ -12,7 +12,7 @@ add_library(static_basic STATIC ${BASIC})
 
 target_include_directories(static_basic 
     PUBLIC 
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/header
 )
 
 set_target_properties(static_basic PROPERTIES PREFIX "lib")
@@ -23,7 +23,7 @@ set_target_properties(static_basic PROPERTIES SUFFIX ".a")
 add_library(dynamic_basic SHARED ${BASIC})
 target_include_directories(dynamic_basic 
     PUBLIC 
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/header
 )
 
 

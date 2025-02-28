@@ -6,9 +6,9 @@ project(root)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # Set execute path
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output)
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib) # static lib path
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib) # dynamic lib path
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/output)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output/lib/static) # static lib path
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output/lib/dynamic) # dynamic lib path
 
 
 ##################
